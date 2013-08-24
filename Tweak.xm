@@ -2,18 +2,9 @@
 #include <notify.h>
 #import <sys/sysctl.h>
 
-#import <SpringBoard/SBSearchView.h>
+#import <SpringBoard/SpringBoard.h>
 
-@interface XXUnknownSuperclass
-@end
-
-@interface SBDisplay : XXUnknownSuperclass
-@end
-
-@interface SBAlert : SBDisplay
-@end
-
-@interface SBAwayController : SBAlert
+@interface SBAwayController (GuestAccount)
 -(id)awayView;
 -(void)swipeGuestIn;
 -(void)swipeGuestOut;
@@ -23,15 +14,11 @@
 -(NSArray *)runningProcesses;
 @end
 
-@interface SBAwayLockBar : UIView
+@interface SBAwayLockBar (GuestAccount)
 -(void)knobDragged:(float)dragged;
 @end
 
-@interface SBUIFullScreenAlertAdapter : SBAlert
--(BOOL)handleLockButtonPressed;
-@end
-
-@interface SBSearchController
+@interface SBSearchController (GuestAccount)
 -(void)tappedExitGuest;
 -(SBSearchView *)searchView;
 @end
