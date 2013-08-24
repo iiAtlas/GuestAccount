@@ -1,7 +1,7 @@
 include theos/makefiles/common.mk
 
 TWEAK_NAME = GuestAccount
-GuestAccount_FILES = Tweak.xm
+GuestAccount_FILES = Tweak.xm GuestAccountManager.m
 GuestAccount_FRAMEWORKS = UIKit
 
 BUNDLE_NAME = GuestAccountResources
