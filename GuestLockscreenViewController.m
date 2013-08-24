@@ -13,12 +13,12 @@
 		NSBundle *bundle = [[[NSBundle alloc] initWithPath:@"/Library/MobileSubstrate/DynamicLibraries/GuestAccountResources.bundle"] autorelease];
 		UIImage *buttonImage = [UIImage imageWithContentsOfFile:[bundle pathForResource:@"guestCircle" ofType:@"png"]];
 
-		guestButton = [[[UIButton alloc] initWithFrame:CGRectMake(-100, 120, 100, 100)] autorelease];
+		guestButton = [[[UIButton alloc] initWithFrame:CGRectMake(-100, 87, 100, 100)] autorelease];
 		[guestButton setImage:buttonImage forState:UIControlStateNormal];
 		[guestButton setAlpha:0];
 		[guestButton addTarget:self action:@selector(tappedGuest) forControlEvents:UIControlEventTouchUpInside];
 
-		guestLabel = [[[UILabel alloc] initWithFrame:CGRectMake(85, 200, 150, 30)] autorelease];
+		guestLabel = [[[UILabel alloc] initWithFrame:CGRectMake(85, 180, 150, 30)] autorelease];
 		[guestLabel setText:@"Login Guest"];
 		[guestLabel setTextColor:[UIColor whiteColor]];
 		[guestLabel setTextAlignment:UITextAlignmentCenter];
@@ -47,7 +47,7 @@
 -(void)swipeGuestIn {
 	if(!guestViewVisible) {
 		[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-			[guestButton setFrame:CGRectMake(110, 100, 100, 100)];
+			[guestButton setFrame:CGRectMake(110, 87, 100, 100)];
 			[guestButton setAlpha:1];
 		} completion:^(BOOL finished){
 			[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
@@ -61,7 +61,7 @@
 -(void)swipeGuestOut {
 	if(guestViewVisible) {
 		[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-			[guestButton setFrame:CGRectMake(-100, 120, 100, 100)];
+			[guestButton setFrame:CGRectMake(-100, 87, 100, 100)];
 			[guestButton setAlpha:0];
 			[guestLabel setAlpha:0];
 		} completion:^(BOOL finished){
@@ -73,9 +73,9 @@
 -(void)tappedGuest {
 	if(guestViewVisible) {
 		[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-			[guestButton setFrame:CGRectMake(130, 110, 120, 120)];
+			[guestButton setFrame:CGRectMake(105, 77, 110, 110)];
 		} completion:^(BOOL finished){
-			[[GuestAccountManager sharedManager] enableGuestMode];
+		//	[[GuestAccountManager sharedManager] enableGuestMode];
 		}];
 	}
 }
