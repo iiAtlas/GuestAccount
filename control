@@ -1,0 +1,9 @@
+Package: com.atlas.guestaccount
+Name: GuestAccount
+Depends: mobilesubstrate
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: Atlas Wegman
+Author: Atlas Wegman
+Section: Tweaks
