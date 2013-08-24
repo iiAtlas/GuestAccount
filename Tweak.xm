@@ -1,17 +1,14 @@
+#import <SpringBoard/SpringBoard.h>
 #import <UIKit/UIKit.h>
 #include <notify.h>
-#import <sys/sysctl.h>
 
-#import <SpringBoard/SpringBoard.h>
+#import "GuestAccountManager.h"
 
 @interface SBAwayController (GuestAccount)
 -(id)awayView;
 -(void)swipeGuestIn;
 -(void)swipeGuestOut;
 -(void)tappedGuest;
--(void)setGuestMode;
--(void)endGuestMode;
--(NSArray *)runningProcesses;
 @end
 
 @interface SBAwayLockBar (GuestAccount)
@@ -128,92 +125,9 @@ BOOL guestModeEnabled;
             guestButton.frame = CGRectMake(130, 110, 120, 120);
             [modifiedAwayView setUserInteractionEnabled:NO];
         } completion:^(BOOL finished){
-            [self setGuestMode];
+            [[GuestAccountManager sharedManager] enableGuestMode];
         }];
     }
-}
-
-%new
-//does all the file modification stuff and soft resprings
--(void)setGuestMode {    
-    //kill all (user) applications, makes sure apps reset data
-    for (NSString *processName in [self runningProcesses]) {
-        NSLog(@"\n\n processName:%@", processName);
-        system([[NSString stringWithFormat:@"killall %@", processName] cStringUsingEncoding:NSASCIIStringEncoding]);
-    }
-    //move applications
-    [[NSFileManager defaultManager] moveItemAtPath:@"/var/mobile/Applications" toPath:@"/var/mobile/Applications.bak" error:nil];
-    
-    //move contacts and contact images
-    [[NSFileManager defaultManager] moveItemAtPath:@"/var/mobile/Library/AddressBook/AddressBook.sqlitedb" toPath:@"/var/mobile/Library/AddressBook/AddressBook.sqlitedb.bak" error:nil];
-    [[NSFileManager defaultManager] moveItemAtPath:@"/var/mobile/Library/AddressBook/AddressBookImages.sqlitedb" toPath:@"/var/mobile/Library/AddressBook/AddressBookImages.sqlitedb.bak" error:nil];
-    
-    //set springboard to do a soft respring
-    NSString *filename = @"/var/mobile/Library/Preferences/com.apple.springboard.plist";
-    NSMutableDictionary *prefs = [[[NSMutableDictionary alloc] initWithContentsOfFile:filename] autorelease];
-    [prefs setValue:@"true" forKey:@"SBLanguageRestart"];
-    [prefs writeToFile:filename atomically:YES];
-    
-    //send respring command
-    system("killall SpringBoard");
-}
-
-%new
-//restore all files 
--(void)endGuestMode {
-    //restore applications
-    [[NSFileManager defaultManager] moveItemAtPath:@"/var/mobile/Applications.bak" toPath:@"/var/mobile/Applications" error:nil];
-    //restore contacts and contact images
-    [[NSFileManager defaultManager] moveItemAtPath:@"/var/mobile/Library/AddressBook/AddressBook.sqlitedb.bak" toPath:@"/var/mobile/Library/AddressBook/AddressBook.sqlitedb" error:nil];
-    [[NSFileManager defaultManager] moveItemAtPath:@"/var/mobile/Library/AddressBook/AddressBookImages.sqlitedb.bak" toPath:@"/var/mobile/Library/AddressBook/AddressBookImages.sqlitedb" error:nil];
-
-    //full respring, passcode will be required if one is set
-    system("killall SpringBoard");
-}
-
-%new
-//make array of running processes
--(NSArray *)runningProcesses {
-    NSString *appleProcesses = @"kernel_task, launchd, UserEventAgent, wifid, timed, syslogd, powerd, lockdownd, installd, deleted, mediaserverd, mDNSResponder, locationd, imagent, iaptransportd, fseventsd, fairplayd.J1, AppleIDAuthAgent, configd, backboardd, kbd, BTServer, notifyd, itunesstored, SpringBoard, aggregated, networkd, networkd_privile, CommCenterClassi, apsd, gamed, dataaccessd, aosnotifyd, accountsd, lsd, distnoted, assetsd, tccd, softwareupdatese, MobilePhone, MobileMail, xpcd, geod, BlueTool, SCHelper, filecoordination, coresymbolicatio, absinthed.J1, notification_pro, afcd, MobileSMS, ptpd, syslog_relay, DTMobileIS, springboardservi, librariand, ubd, syncdefaultsd, lockbot, amfid, assistantd, assistant_servic, securityd, sandboxd, debugserver, appkick distro, CFNetworkAgent, awdd, pasteboardd";
-    int mib[4] = {CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0};
-    size_t miblen = 4;
-    size_t size;
-    int st = sysctl(mib, miblen, NULL, &size, NULL, 0);
-    struct kinfo_proc *process = NULL;
-    struct kinfo_proc *newprocess = NULL;
-    do {
-        size += size / 10;
-        newprocess = (struct kinfo_proc *)realloc(process, size);
-        if (!newprocess){
-            if (process){
-                free(process);
-            }
-            return nil;
-        }
-        process = newprocess;
-        st = sysctl(mib, miblen, process, &size, NULL, 0);
-    } while (st == -1 && errno == ENOMEM);
-    if (st == 0){
-        if (size % sizeof(struct kinfo_proc) == 0){
-            int nprocess = size / sizeof(struct kinfo_proc);
-            if (nprocess){
-               NSMutableArray *array = [[NSMutableArray alloc] init];
-                for (int i = nprocess -1; i >= 0; i--){
-                    NSString *processName = [[NSString alloc] initWithFormat:@"%s", process[i].kp_proc.p_comm];
-                    //if its a user application, add it to returned array
-                    NSLog(@"%@", processName);
-                    if([appleProcesses rangeOfString:processName].location == NSNotFound) {
-                        [array addObject:processName];
-                    }
-                    [processName release];
-                }
-                free(process);
-                return [array autorelease];
-            }
-        }
-    }
-
-    return nil;
 }
 
 %end
