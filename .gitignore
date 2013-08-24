@@ -1,0 +1,9 @@
+.DS_Store
+*/.DS_Store
+obj/*
+/obj/*
+*.deb
+.theos/*
+_/*
+*/*.dylib
+theos
