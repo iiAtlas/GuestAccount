@@ -1,4 +1,5 @@
 #import "GuestSearchViewController.h"
+#import "GuestAccountManager.h"
 
 @implementation GuestSearchViewController
 
@@ -13,7 +14,7 @@
 		[guestButton addTarget:self action:@selector(tappedExitGuest) forControlEvents:UIControlEventTouchUpInside];
 
 		guestLabel = [[[UILabel alloc] initWithFrame:CGRectMake(85, 200, 150, 30)] autorelease];
-		[guestLabel setText:@"Logout Guest_"];
+		[guestLabel setText:@"Logout Guest"];
 		[guestLabel setTextColor:[UIColor whiteColor]];
 		[guestLabel setBackgroundColor:[UIColor clearColor]];
 		[guestLabel setShadowColor:[UIColor colorWithWhite:0.5 alpha:0.3]];
@@ -40,7 +41,7 @@
 }
 
 -(void)tappedExitGuest {
-
+	[[GuestAccountManager sharedManager] disableGuestMode];
 }
 
 @end

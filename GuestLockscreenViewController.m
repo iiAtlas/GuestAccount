@@ -75,7 +75,7 @@
 		[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
 			[guestButton setFrame:CGRectMake(105, 77, 110, 110)];
 		} completion:^(BOOL finished){
-		//	[[GuestAccountManager sharedManager] enableGuestMode];
+			[[GuestAccountManager sharedManager] enableGuestMode];
 		}];
 	}
 }

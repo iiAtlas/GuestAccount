@@ -12,12 +12,12 @@
 }
 
 +(GuestAccountManager *)sharedManager {
-	dispatch_once_t pred;
-	static GuestAccountManager *sharedInstance = nil;
-	dispatch_once(&pred, ^{
-		sharedInstance = [[GuestAccountManager alloc] init];
-	});
-	return sharedInstance;
+	static dispatch_once_t once;
+    static id sharedInstance;
+    dispatch_once(&once, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    return sharedInstance;
 }
 
 -(void)enableGuestMode {
