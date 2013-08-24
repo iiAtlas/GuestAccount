@@ -28,18 +28,15 @@ static char GUEST_SEARCH_VC_KEY;
 
 %hook SBSearchController
 -(id)init {
-    SBSearchController *me = %orig;
-
     GuestSearchViewController *guestSearchVC = [[GuestSearchViewController alloc] init];
     objc_setAssociatedObject(self, &GUEST_SEARCH_VC_KEY, guestSearchVC, OBJC_ASSOCIATION_RETAIN);
 
-    return me;
+    return %orig;
 }
 
 -(void)controllerWasActivated {
     GuestSearchViewController *vc = objc_getAssociatedObject(self, &GUEST_SEARCH_VC_KEY);
     [[self searchView] addSubview:[vc view]];
-
     [vc showGuestButton];
 
     %orig;
@@ -61,6 +58,16 @@ static char GUEST_SEARCH_VC_KEY;
 
         [vc hideGuestButton];
     }
+
     return %orig;
+}
+%end
+
+%hook SBAwayLockBar
+-(void)knobDragged:(float)dragged {
+    if (dragged == 1.0f) {
+        //we need to move the guest view out here incase the user has a password
+    }
+    %orig;
 }
 %end
