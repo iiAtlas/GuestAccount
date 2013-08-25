@@ -5,7 +5,11 @@
 
 -(id)init {
 	if((self = [super init])) {
-		UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 110, 360, 290)];
+		CGFloat w = [[UIScreen mainScreen] bounds].size.width;
+		CGFloat h = [[UIScreen mainScreen] bounds].size.height;
+
+		UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 110, w, h - 208)];
+		[view setBackgroundColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.1]];
 		[self setView:view];
 		[view release];
 

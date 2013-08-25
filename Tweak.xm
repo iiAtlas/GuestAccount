@@ -16,13 +16,11 @@
 static char GUEST_SEARCH_VC_KEY;
 
 %hook SBAwayController
--(id)awayView {
-    UIView *modifiedAwayView = %orig;
-
+-(void)activate {
     GuestLockscreenViewController *guestLockVC = [[GuestLockscreenViewController alloc] init];
-    [modifiedAwayView addSubview:[guestLockVC view]];
+    [[self awayView] addSubview:[guestLockVC view]];
 
-    return modifiedAwayView;
+    %orig;
 }
 %end
 
