@@ -9,7 +9,6 @@
 		H = [[UIScreen mainScreen] bounds].size.height;
 
 		UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 117, W, H - 213)];
-		[view setBackgroundColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.3]];
 		[self setView:view];
 		[view release];
 
@@ -49,63 +48,70 @@
 }
 
 -(void)swipeGuestFromLeft {
-	if(!guestViewVisible) { //Swipe in from left
-		[guestButton setFrame:CGRectMake(-100, 120, 100, 100)];
-		[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-			[guestButton setFrame:CGRectMake((W - 100) / 2, 100, 100, 100)];
-			[guestButton setAlpha:1];
-		} completion:^(BOOL finished){
+	if(!loggingIn) {
+		if(!guestViewVisible) { //Swipe in from left
+			[guestButton setFrame:CGRectMake(-100, 120, 100, 100)];
 			[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-				[guestLabel setAlpha:1];
-		} completion:nil];
-			guestViewVisible = YES;
-		}];
-	}else { //Swipe out to right
-		[guestButton setFrame:CGRectMake((W - 100) / 2, 100, 100, 100)];
-		[UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-			[guestLabel setAlpha:0];
-		} completion:^(BOOL finished){
-			[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-				[guestButton setFrame:CGRectMake(W, 120, 100, 100)];
-				[guestButton setAlpha:0];
+				[guestButton setFrame:CGRectMake((W - 100) / 2, 100, 100, 100)];
+				[guestButton setAlpha:1];
 			} completion:^(BOOL finished){
-				guestViewVisible = NO;
+				[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+					[guestLabel setAlpha:1];
+			} completion:nil];
+				guestViewVisible = YES;
 			}];
-		}];
+		}else { //Swipe out to right
+			[guestButton setFrame:CGRectMake((W - 100) / 2, 100, 100, 100)];
+			[UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+				[guestLabel setAlpha:0];
+			} completion:^(BOOL finished){
+				[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+					[guestButton setFrame:CGRectMake(W, 120, 100, 100)];
+					[guestButton setAlpha:0];
+				} completion:^(BOOL finished){
+					guestViewVisible = NO;
+				}];
+			}];
+		}
 	}
 }
 
 -(void)swipeGuestFromRight {
-	if(!guestViewVisible) { //Swipe in from right
-		[guestButton setFrame:CGRectMake(W, 120, 100, 100)];
-		[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-			[guestButton setFrame:CGRectMake((W - 100) / 2, 100, 100, 100)];
-			[guestButton setAlpha:1];
-		} completion:^(BOOL finished){
+	if(!loggingIn) {
+		if(!guestViewVisible) { //Swipe in from right
+			[guestButton setFrame:CGRectMake(W, 120, 100, 100)];
 			[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-				[guestLabel setAlpha:1];
-		} completion:nil];
-			guestViewVisible = YES;
-		}];
-	}else { //Swipe out to left
-		[guestButton setFrame:CGRectMake((W - 100) / 2, 100, 100, 100)];
-		[UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-			[guestLabel setAlpha:0];
-		} completion:^(BOOL finished){
-			[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-				[guestButton setFrame:CGRectMake(-100, 120, 100, 100)];
-				[guestButton setAlpha:0];
+				[guestButton setFrame:CGRectMake((W - 100) / 2, 100, 100, 100)];
+				[guestButton setAlpha:1];
 			} completion:^(BOOL finished){
-				guestViewVisible = NO;
+				[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+					[guestLabel setAlpha:1];
+			} completion:nil];
+				guestViewVisible = YES;
 			}];
-		}];
+		}else { //Swipe out to left
+			[guestButton setFrame:CGRectMake((W - 100) / 2, 100, 100, 100)];
+			[UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+				[guestLabel setAlpha:0];
+			} completion:^(BOOL finished){
+				[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+					[guestButton setFrame:CGRectMake(-100, 120, 100, 100)];
+					[guestButton setAlpha:0];
+				} completion:^(BOOL finished){
+					guestViewVisible = NO;
+				}];
+			}];
+		}
 	}
 }
 
 -(void)tappedGuest {
-	if(guestViewVisible) {
+	if(guestViewVisible && !loggingIn) {
+		loggingIn = YES; //Warning: never set to no (for now)
 		[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-			[guestButton setFrame:CGRectMake(130, 110, 120, 120)];
+			[guestButton setFrame:CGRectMake((W - 120) / 2, 90, 120, 120)];
+			[guestLabel setFrame:CGRectMake((W - 150) / 2, 210, 150, 30)];
+			[guestLabel setText:@"Logging in"];
 		} completion:^(BOOL finished){
 			[[GuestAccountManager sharedManager] enableGuestMode];
 		}];

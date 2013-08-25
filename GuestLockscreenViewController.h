@@ -4,7 +4,7 @@
 	UIButton *guestButton;
 	UILabel *guestLabel;
 
-	BOOL guestViewVisible;
+	BOOL guestViewVisible, loggingIn;
 
 	CGFloat W, H;
 }
