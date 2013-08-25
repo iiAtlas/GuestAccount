@@ -22,7 +22,7 @@
 		[guestButton setAlpha:0];
 		[guestButton addTarget:self action:@selector(tappedGuest) forControlEvents:UIControlEventTouchUpInside];
 
-		guestLabel = [[[UILabel alloc] initWithFrame:CGRectMake(85, 200, 150, 30)] autorelease];
+		guestLabel = [[[UILabel alloc] initWithFrame:CGRectMake((W - 150) / 2, 200, 150, 30)] autorelease];
 		[guestLabel setText:@"Login Guest"];
 		[guestLabel setTextColor:[UIColor whiteColor]];
 		[guestLabel setTextAlignment:UITextAlignmentCenter];
@@ -52,7 +52,7 @@
 	if(!guestViewVisible) { //Swipe in from left
 		[guestButton setFrame:CGRectMake(-100, 120, 100, 100)];
 		[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-			[guestButton setFrame:CGRectMake(110, 100, 100, 100)];
+			[guestButton setFrame:CGRectMake((W - 100) / 2, 100, 100, 100)];
 			[guestButton setAlpha:1];
 		} completion:^(BOOL finished){
 			[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
@@ -61,7 +61,7 @@
 			guestViewVisible = YES;
 		}];
 	}else { //Swipe out to right
-		[guestButton setFrame:CGRectMake(110, 100, 100, 100)];
+		[guestButton setFrame:CGRectMake((W - 100) / 2, 100, 100, 100)];
 		[UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
 			[guestLabel setAlpha:0];
 		} completion:^(BOOL finished){
@@ -79,7 +79,7 @@
 	if(!guestViewVisible) { //Swipe in from right
 		[guestButton setFrame:CGRectMake(W, 120, 100, 100)];
 		[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-			[guestButton setFrame:CGRectMake(110, 100, 100, 100)];
+			[guestButton setFrame:CGRectMake((W - 100) / 2, 100, 100, 100)];
 			[guestButton setAlpha:1];
 		} completion:^(BOOL finished){
 			[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
@@ -88,7 +88,7 @@
 			guestViewVisible = YES;
 		}];
 	}else { //Swipe out to left
-		[guestButton setFrame:CGRectMake(110, 100, 100, 100)];
+		[guestButton setFrame:CGRectMake((W - 100) / 2, 100, 100, 100)];
 		[UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
 			[guestLabel setAlpha:0];
 		} completion:^(BOOL finished){
