@@ -5,10 +5,12 @@
 	UILabel *guestLabel;
 
 	BOOL guestViewVisible;
+
+	CGFloat W, H;
 }
 
 -(void)tappedGuest;
--(void)swipeGuestIn;
--(void)swipeGuestOut;
+-(void)swipeGuestFromLeft;
+-(void)swipeGuestFromRight;
 
 @end
