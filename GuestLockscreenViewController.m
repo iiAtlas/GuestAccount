@@ -105,6 +105,16 @@
 	}
 }
 
+-(void)fadeOut {
+	[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+		[guestButton setFrame:CGRectMake(-100, 120, 100, 100)];
+		[guestButton setAlpha:0];
+		[guestLabel setAlpha:0];
+	} completion:^(BOOL finished){
+		guestViewVisible = NO;
+	}];
+}
+
 -(void)tappedGuest {
 	if(guestViewVisible && !loggingIn) {
 		loggingIn = YES; //Warning: never set to no (for now)

@@ -12,5 +12,6 @@
 -(void)tappedGuest;
 -(void)swipeGuestFromLeft;
 -(void)swipeGuestFromRight;
+-(void)fadeOut;
 
 @end
