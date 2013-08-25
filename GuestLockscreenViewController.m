@@ -8,8 +8,8 @@
 		CGFloat w = [[UIScreen mainScreen] bounds].size.width;
 		CGFloat h = [[UIScreen mainScreen] bounds].size.height;
 
-		UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 110, w, h - 208)];
-		[view setBackgroundColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.1]];
+		UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 117, w, h - 213)];
+		[view setBackgroundColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.3]];
 		[self setView:view];
 		[view release];
 
@@ -64,12 +64,15 @@
 
 -(void)swipeGuestOut {
 	if(guestViewVisible) {
-		[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-			[guestButton setFrame:CGRectMake(-100, 120, 100, 100)];
-			[guestButton setAlpha:0];
+		[UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
 			[guestLabel setAlpha:0];
 		} completion:^(BOOL finished){
-			guestViewVisible = NO;
+			[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+				[guestButton setFrame:CGRectMake(-100, 120, 100, 100)];
+				[guestButton setAlpha:0];
+			} completion:^(BOOL finished){
+				guestViewVisible = NO;
+			}];
 		}];
 	}
 }
