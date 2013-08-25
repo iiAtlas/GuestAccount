@@ -12,9 +12,9 @@
 }
 
 +(GuestAccountManager *)sharedManager {
-	dispatch_once_t pred;
+	static dispatch_once_t once;
 	static GuestAccountManager *sharedInstance = nil;
-	dispatch_once(&pred, ^{
+	dispatch_once(&once, ^{
 		sharedInstance = [[GuestAccountManager alloc] init];
 	});
 	return sharedInstance;

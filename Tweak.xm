@@ -54,3 +54,12 @@ static char GUEST_SEARCH_VC_KEY;
     %orig;  
 }
 %end
+
+%hook SBAwayLockBar
+-(void)knobDragged:(float)dragged {
+    if (dragged == 1.0f) {
+        //we need to move the guest view out here incase the user has a password
+    }
+    %orig;
+}
+%end
