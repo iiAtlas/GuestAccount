@@ -1,4 +1,5 @@
 #import <SpringBoard/SpringBoard.h>
+#import <SpringBoard/SBAwayBulletinListController.h>
 #import <UIKit/UIKit.h>
 
 #import "GuestAccountManager.h"
@@ -14,11 +15,25 @@
 @end
 
 static char GUEST_SEARCH_VC_KEY;
+static char GUEST_LOCK_VC_KEY;
 
 %hook SBAwayController
 -(void)activate {
     GuestLockscreenViewController *guestLockVC = [[GuestLockscreenViewController alloc] init];
     [[self awayView] addSubview:[guestLockVC view]];
+
+    objc_setAssociatedObject(self, &GUEST_LOCK_VC_KEY, guestLockVC, OBJC_ASSOCIATION_RETAIN);
+
+    %orig;
+}
+
+-(void)undimScreen:(BOOL)arg1 {
+    GuestLockscreenViewController *guestLockVC = objc_getAssociatedObject(self, &GUEST_LOCK_VC_KEY);
+    SBAwayBulletinListController *bulletinController = [self activeOrPendingBulletinController];
+
+    //Check for messages, hide login head if found
+    if([[bulletinController listItems] count] > 0) [guestLockVC setAllowsGestures:NO];
+    else [guestLockVC setAllowsGestures:YES];
 
     %orig;
 }

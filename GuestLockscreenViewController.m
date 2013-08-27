@@ -3,6 +3,8 @@
 
 @implementation GuestLockscreenViewController
 
+@synthesize allowsGestures;
+
 -(id)init {
 	if((self = [super init])) {
 		W = [[UIScreen mainScreen] bounds].size.width;
@@ -48,7 +50,7 @@
 }
 
 -(void)swipeGuestFromLeft {
-	if(!loggingIn) {
+	if(!loggingIn && [self allowsGestures]) {
 		if(!guestViewVisible) { //Swipe in from left
 			[guestButton setFrame:CGRectMake(-100, 120, 100, 100)];
 			[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
@@ -77,7 +79,7 @@
 }
 
 -(void)swipeGuestFromRight {
-	if(!loggingIn) {
+	if(!loggingIn && [self allowsGestures]) {
 		if(!guestViewVisible) { //Swipe in from right
 			[guestButton setFrame:CGRectMake(W, 120, 100, 100)];
 			[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
@@ -105,14 +107,19 @@
 	}
 }
 
--(void)fadeOut {
-	[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-		[guestButton setFrame:CGRectMake(-100, 120, 100, 100)];
+-(void)fadeOut:(BOOL)immediate {
+	if(immediate) {
 		[guestButton setAlpha:0];
 		[guestLabel setAlpha:0];
-	} completion:^(BOOL finished){
 		guestViewVisible = NO;
-	}];
+	}else {
+		[UIView animateWithDuration:1.0 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+			[guestButton setAlpha:0];
+			[guestLabel setAlpha:0];
+		} completion:^(BOOL finished){
+			guestViewVisible = NO;
+		}];
+	}
 }
 
 -(void)tappedGuest {
@@ -125,6 +132,16 @@
 		} completion:^(BOOL finished){
 			[[GuestAccountManager sharedManager] enableGuestMode];
 		}];
+	}
+}
+
+-(void)setAllowsGestures:(BOOL)allows {
+	allowsGestures = allows;
+	if(allowsGestures) {
+		[[self view] setUserInteractionEnabled:YES];
+	}else {
+		[[self view] setUserInteractionEnabled:NO];
+		if(guestViewVisible) [self fadeOut:YES];
 	}
 }
 

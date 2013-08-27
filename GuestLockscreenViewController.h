@@ -9,9 +9,11 @@
 	CGFloat W, H;
 }
 
+@property (nonatomic, assign) BOOL allowsGestures;
+
 -(void)tappedGuest;
 -(void)swipeGuestFromLeft;
 -(void)swipeGuestFromRight;
--(void)fadeOut;
+-(void)fadeOut:(BOOL)immediate;
 
 @end
